@@ -28,7 +28,7 @@ bundle). The plugin is fully self-contained with zero external dependencies.
 | Sound | Trigger | Source (original opencode) |
 |---|---|---|
 | done | a turn finishes | `bip-bop-01.mp3` |
-| question | the question dialog appears | `yup-01.mp3` |
+| question | the question dialog appears / a plan is submitted for review | `yup-01.mp3` |
 | error | a turn ends in error | `nope-03.mp3` |
 
 ## Install
@@ -77,9 +77,9 @@ curl http://127.0.0.1:3080/chime/debug?play=done      # done | question | error
   agents, matching opencode semantics. Uninstall to stop:
   `dsh plugin --profile web remove dsh-chime`.
 - **Question sound missing?** The question sound triggers when the question
-  tool **starts** (the moment the dialog appears). Non-standard question
-  channels that do not go through the `ask_user_question` tool will not
-  trigger it.
+  tool **starts** (the moment the dialog appears); the plan-review sound
+  triggers when the `exit_plan_mode` tool starts. Non-standard question/plan
+  channels that do not go through these tools will not trigger it.
 - **Still active after restart?** Yes — bundle plugins are assembled from the
   profile on startup.
 
