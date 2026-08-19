@@ -1,0 +1,4 @@
+# dsh-chime bundle：向组合挂 Node half（提示音入队 + 轮询/调试路由）
+- insert:
+    - id: dsh-chime
+      name: 'dsh-chime'
