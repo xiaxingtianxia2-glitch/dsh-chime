@@ -7,14 +7,15 @@
 ## 这是什么
 
 为 DeepSeek Harness 复刻 opencode 的任务完成提示音：一轮对话完成、向你提问、
-或一轮出错结束时播放清脆提示音。三个音效均为 opencode 官方仓库的**原始 mp3
-无损内嵌**（base64 打包在 client 中），插件完全自包含、零外部依赖。
+计划提交待审、或一轮出错结束时播放清脆提示音。三个音源均为 opencode 官方
+仓库的**原始 mp3 无损内嵌**（base64 打包在 client 中），插件完全自包含、
+零外部依赖。
 
 ## 工作原理
 
 1. **host 半**（Cordis bundle entry）监听 `agent/status`（一轮 `running → idle`
-   即完成，出错轮播错误音）与 `tools/execute`（`ask_user_question` 提问工具
-   开始执行即入队提问音），按需入队音效；
+   即完成，出错轮播错误音）与 `tools/execute`（`ask_user_question` 提问工具、
+   `exit_plan_mode` 计划提交工具开始执行即入队提问音），按需入队音效；
 2. **webServer 路由**：`/chime/poll` 提供待播队列，`/chime/debug` 提供状态与
    试听入口；
 3. **client 半**（浏览器）每 250ms 轮询 `/chime/poll`，用 `Audio` 播放内嵌
@@ -52,7 +53,7 @@ curl http://127.0.0.1:3080/chime/debug
 ```
 
 ```json
-{"pendingCount":0,"recent":["question","done"],"runningCount":1}
+{"pendingCount":0,"recent":["done","question"],"runningCount":1}
 ```
 
 字段含义：`recent` 最近入队历史；`pendingCount` 待播放队列长度（client 每
