@@ -8,16 +8,18 @@
 
 Replicates opencode's task-completion chime inside DeepSeek Harness: a crisp
 notification sound when a turn finishes, when the agent asks you a question,
-or when a turn ends in error. All three sounds are the **original mp3 files
-from the opencode repository**, embedded losslessly (base64 inside the client
-bundle). The plugin is fully self-contained with zero external dependencies.
+when a plan is submitted for review, or when a turn ends in error. All three
+sources are the **original mp3 files from the opencode repository**, embedded
+losslessly (base64 inside the client bundle). The plugin is fully
+self-contained with zero external dependencies.
 
 ## How it works
 
 1. **Host half** (Cordis bundle entry) listens to `agent/status` (a `running →
    idle` transition means a turn finished; error-marked turns play the error
    sound) and `tools/execute` (queues the question sound the moment the
-   `ask_user_question` tool starts), enqueueing sounds as needed;
+   `ask_user_question` question tool or the `exit_plan_mode` plan tool
+   starts), enqueueing sounds as needed;
 2. **webServer routes**: `/chime/poll` serves the pending queue,
    `/chime/debug` exposes status and a listen-through entry;
 3. **Client half** (browser) polls `/chime/poll` every 250 ms and plays the
@@ -56,7 +58,7 @@ curl http://127.0.0.1:3080/chime/debug
 ```
 
 ```json
-{"pendingCount":0,"recent":["question","done"],"runningCount":1}
+{"pendingCount":0,"recent":["done","question"],"runningCount":1}
 ```
 
 `recent` = recent enqueue history; `pendingCount` = queue length (consumed by
